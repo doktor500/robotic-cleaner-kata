@@ -1,6 +1,7 @@
 package uk.co.kenfos
 
 import org.junit.Test
+import uk.co.kenfos.base.FunctionalSpec
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST
 import static org.springframework.http.HttpStatus.OK

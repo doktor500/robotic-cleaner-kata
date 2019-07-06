@@ -1,4 +1,4 @@
-package uk.co.kenfos
+package uk.co.kenfos.base
 
 import com.jayway.restassured.specification.RequestSpecification
 import org.junit.runner.RunWith
@@ -21,10 +21,10 @@ abstract class FunctionalSpec extends Specification {
     @Value('${server.port}') private Integer serverPort
 
     protected post(Map args) {
-        requestTo(args.resource).body(args.content).post()
+        requestTo(args.resource as String).body(args.content).post()
     }
 
-    protected json(response) {
+    protected static json(response) {
         response.jsonPath().get()
     }
 

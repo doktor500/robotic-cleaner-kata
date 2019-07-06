@@ -19,11 +19,13 @@ public class CoordinateSerializer extends StdSerializer<Coordinate> {
     }
 
     @Override
-    public void serialize(Coordinate coordinate, JsonGenerator generator, SerializerProvider provider) throws IOException {
-        generator.writeObject(getCoordinateValues(coordinate));
+    public void serialize(Coordinate coordinate, JsonGenerator json, SerializerProvider provider) throws IOException {
+        json.writeObject(getCoordinateValues(coordinate));
     }
 
     private List<Integer> getCoordinateValues(Coordinate value) {
-        return Stream.of(value.getX(), value.getY()).filter(Objects::nonNull).collect(toList());
+        return Stream.of(value.getX(), value.getY())
+            .filter(Objects::nonNull)
+            .collect(toList());
     }
 }

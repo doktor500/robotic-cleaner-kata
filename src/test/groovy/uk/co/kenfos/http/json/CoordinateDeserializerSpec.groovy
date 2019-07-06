@@ -1,11 +1,10 @@
 package uk.co.kenfos.http.json
 
-import com.fasterxml.jackson.core.JsonFactory
-import com.fasterxml.jackson.core.JsonParser
-import com.fasterxml.jackson.databind.ObjectMapper
 import spock.lang.Specification
 import spock.lang.Unroll
 import uk.co.kenfos.domain.Coordinate
+
+import static uk.co.kenfos.utils.JsonUtils.jsonParser
 
 class CoordinateDeserializerSpec extends Specification {
 
@@ -41,10 +40,6 @@ class CoordinateDeserializerSpec extends Specification {
             '[""]',
             '[]'
         ]
-    }
-
-    private static JsonParser jsonParser(String json) {
-        return new JsonFactory(new ObjectMapper()).createParser(json)
     }
 }
 
