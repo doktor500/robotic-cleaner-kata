@@ -1,27 +1,16 @@
 package uk.co.kenfos
 
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
-import org.springframework.test.context.junit4.SpringRunner
-import org.springframework.test.web.reactive.server.WebTestClient
-import uk.co.kenfos.domain.Coordinate
-import uk.co.kenfos.http.CleanResponse
 
-import static org.springframework.http.MediaType.APPLICATION_JSON
-import static org.springframework.web.reactive.function.BodyInserters.fromObject
+import static org.springframework.http.HttpStatus.BAD_REQUEST
+import static org.springframework.http.HttpStatus.OK
 
-@WebFluxTest
-@RunWith(SpringRunner)
-class RoboticCleanerFunctionalSpec {
-
-    @Autowired private WebTestClient webClient
+class RoboticCleanerFunctionalSpec extends FunctionalSpec {
 
     @Test
-    void 'the robot cleans the sea'() {
+    void 'when the request is valid, the robot cleans the sea'() {
         given:
-        def request = [
+        def validRequestBody = [
             areaSize: [5, 5],
             startingPosition: [1, 2],
             oilPatches: [
@@ -32,14 +21,32 @@ class RoboticCleanerFunctionalSpec {
             navigationInstructions: 'NNESEESWNWW'
         ]
 
-        expect:
-        webClient.post().uri('/robot/clean')
-            .contentType(APPLICATION_JSON)
-            .body(fromObject(request))
-            .exchange()
-            .expectStatus()
-            .isOk()
-            .expectBody(CleanResponse)
-            .isEqualTo(new CleanResponse(new Coordinate(1, 3), 1))
+        when:
+        def response = post(resource: '/robot/clean', content: validRequestBody)
+
+        then:
+        response.statusCode == OK.value()
+        json(response) == [finalPosition: [1, 3], oilPatchesCleaned : 1]
+    }
+
+    @Test
+    void 'when the request is invalid, it returns an error'() {
+        given:
+        def invalidRequestBody = [
+            areaSize: [5, 5],
+            startingPosition: [1],
+            oilPatches: [
+                [1, 0],
+                [2, 2],
+                [2, 3]
+            ],
+            navigationInstructions: 'NNESEESWNWW'
+        ]
+
+        when:
+        def response = post(resource: '/robot/clean', content: invalidRequestBody)
+
+        then:
+        response.statusCode == BAD_REQUEST.value()
     }
 }
