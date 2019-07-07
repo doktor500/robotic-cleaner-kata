@@ -5,12 +5,12 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.java.Log;
-import org.springframework.util.StringUtils;
 import uk.co.kenfos.domain.Coordinate;
 
 import java.io.IOException;
 
 import static java.lang.String.format;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 @Log
 public class CoordinateDeserializer extends JsonDeserializer<Coordinate> {
@@ -20,7 +20,7 @@ public class CoordinateDeserializer extends JsonDeserializer<Coordinate> {
     @Override
     public Coordinate deserialize(JsonParser parser, DeserializationContext ctx) throws IOException {
         var value = readValue(parser);
-        return StringUtils.isEmpty(value) ? null : fromJson(value);
+        return isEmpty(value) ? null : fromJson(value);
     }
 
     private Coordinate fromJson(String text) {

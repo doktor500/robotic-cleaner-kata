@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.java.Log;
-import org.springframework.util.StringUtils;
 import uk.co.kenfos.domain.NavigationInstruction;
 
 import java.io.IOException;
@@ -16,6 +15,7 @@ import static java.lang.String.format;
 import static java.util.Arrays.stream;
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 @Log
 public class NavigationInstructionsDeserializer extends JsonDeserializer<List<NavigationInstruction>> {
@@ -25,7 +25,7 @@ public class NavigationInstructionsDeserializer extends JsonDeserializer<List<Na
     @Override
     public List<NavigationInstruction> deserialize(JsonParser parser, DeserializationContext ctx) throws IOException {
         var value = readValue(parser);
-        return StringUtils.isEmpty(value) ? emptyList() : fromJson(value);
+        return isEmpty(value) ? emptyList() : fromJson(value);
     }
 
     private List<NavigationInstruction> fromJson(String text) {
