@@ -17,6 +17,7 @@ import java.util.Collection;
 
 import static io.vavr.collection.List.of;
 import static io.vavr.collection.List.ofAll;
+import static java.lang.Math.toIntExact;
 
 @Log
 @Data
@@ -61,8 +62,8 @@ public class CleanRequest {
             .map(Robot::getCoordinate);
     }
 
-    private int numberOfSquaresCleaned(Sea cleanedSea) {
-        return oilPatches.size() - cleanedSea.oilPatches().size();
+    private Integer numberOfSquaresCleaned(Sea cleanedSea) {
+        return toIntExact(oilPatches.stream().distinct().count() - cleanedSea.oilPatches().stream().distinct().count());
     }
 
     @JsonDeserialize(using = NavigationInstructionsDeserializer.class)
