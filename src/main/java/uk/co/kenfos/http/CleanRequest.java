@@ -1,6 +1,8 @@
 package uk.co.kenfos.http;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.vavr.control.Option;
+import io.vavr.control.Try;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,23 +27,26 @@ public class CleanRequest {
     private List<Coordinate> oilPatches;
     private List<NavigationInstruction> navigationInstructions;
 
-    public CleanResponse execute() {
+    public Try<CleanResponse> execute() {
         var sea = new Sea(areaSize, oilPatches);
         var squaresToClean = ofAll(squaresToClean());
-        validateSquaresToClean(squaresToClean.asJava());
-        return cleanSea(sea, squaresToClean);
-    }
-    
-    private void validateSquaresToClean(List<Coordinate> squaresToClean) {
-        var coordinateOutOfRange = squaresToClean.stream()
-            .filter(coordinate -> coordinate.getX() >= areaSize.getX() || coordinate.getY() >= areaSize.getY())
-            .findAny();
-        if (coordinateOutOfRange.isPresent()) throw new IllegalArgumentException("Coordinate out of range");
+        return Try.of(() ->cleanSea(sea, squaresToClean));
     }
 
     private CleanResponse cleanSea(Sea sea, io.vavr.collection.List<Coordinate> squaresToClean) {
+        validateSquaresToClean(ofAll(squaresToClean()));
         var cleanedSea = squaresToClean.foldLeft(sea, Sea::clean);
         return new CleanResponse(squaresToClean.last(), numberOfSquaresCleaned(cleanedSea));
+    }
+
+    private void validateSquaresToClean(io.vavr.collection.List<Coordinate> squaresToClean) {
+        var coordinatesOutOfRange = anyCoordinateOutOfRange(squaresToClean);
+        if (!coordinatesOutOfRange.isEmpty()) throw new IllegalArgumentException("Coordinate out of range");
+    }
+
+    private Option<Coordinate> anyCoordinateOutOfRange(io.vavr.collection.List<Coordinate> squaresToClean) {
+        return squaresToClean
+            .find(coordinate -> coordinate.getX() >= areaSize.getX() || coordinate.getY() >= areaSize.getY());
     }
 
     private List<Coordinate> squaresToClean() {

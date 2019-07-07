@@ -16,7 +16,7 @@ class CleanRequestSpec extends Specification {
         def request = new CleanRequest(areaSize, startingPosition, oilPatches, navigationInstructions)
 
         expect:
-        request.execute() == new CleanResponse(finalPosition, coordinatesCleaned)
+        request.execute().get() == new CleanResponse(finalPosition, coordinatesCleaned)
 
         where:
         startingPosition     | navigationInstructions | finalPosition        | coordinatesCleaned
@@ -33,10 +33,7 @@ class CleanRequestSpec extends Specification {
         def navigationInstructions = [NORTH, NORTH]
         def request = new CleanRequest(areaSize, startingPosition, oilPatches, navigationInstructions)
 
-        when:
-        request.execute()
-
-        then:
-        thrown IllegalArgumentException
+        expect:
+        request.execute().failure
     }
 }
