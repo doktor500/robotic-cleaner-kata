@@ -51,8 +51,7 @@ public class CleanRequest {
     }
 
     private Option<Coordinate> coordinateOutOfRange(List<Coordinate> squaresToClean) {
-        return squaresToClean
-            .find(coordinate -> coordinate.getX() >= areaSize.getX() || coordinate.getY() >= areaSize.getY());
+        return squaresToClean.find(coordinate -> !areaSize.contains(coordinate));
     }
 
     private List<Coordinate> squaresToClean() {

@@ -10,4 +10,8 @@ import lombok.NoArgsConstructor;
 public class Area {
     private Integer x;
     private Integer y;
+
+    public boolean contains(Coordinate coordinate) {
+        return coordinate.getX() < x && coordinate.getY() < y;
+    }
 }
