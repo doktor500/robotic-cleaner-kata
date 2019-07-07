@@ -5,6 +5,7 @@ import io.vavr.collection.List;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.java.Log;
@@ -21,6 +22,7 @@ import static java.lang.Math.toIntExact;
 
 @Log
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class CleanRequest {

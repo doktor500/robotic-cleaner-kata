@@ -14,7 +14,12 @@ class CleanRequestSpec extends Specification {
         given:
         def areaSize = new Area(2, 2)
         def oilPatches = [new Coordinate(0, 0), new Coordinate(0, 1)]
-        def request = new CleanRequest(areaSize, startingPosition, oilPatches, navigationInstructions)
+        def request = CleanRequest.builder()
+            .areaSize(areaSize)
+            .startingPosition(startingPosition)
+            .oilPatches(oilPatches)
+            .navigationInstructions(navigationInstructions)
+            .build()
 
         expect:
         request.execute().get() == new CleanResponse(finalPosition, coordinatesCleaned)
@@ -32,7 +37,12 @@ class CleanRequestSpec extends Specification {
         def oilPatches = [new Coordinate(1, 1)]
         def startingPosition = new Coordinate(0, 0)
         def navigationInstructions = [NORTH, NORTH]
-        def request = new CleanRequest(areaSize, startingPosition, oilPatches, navigationInstructions)
+        def request = CleanRequest.builder()
+            .areaSize(areaSize)
+            .startingPosition(startingPosition)
+            .oilPatches(oilPatches)
+            .navigationInstructions(navigationInstructions)
+            .build()
 
         expect:
         request.execute().failure
