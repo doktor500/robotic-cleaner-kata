@@ -34,14 +34,14 @@ class RoboticCleanerFunctionalSpec extends FunctionalSpec {
     void 'the robot cleans all oil patches in the sea'() {
         given:
         def validRequestBody = [
-                areaSize: [5, 5],
-                startingPosition: [1, 2],
-                oilPatches: [
-                    [1, 0],
-                    [2, 2],
-                    [2, 3]
-                ],
-                navigationInstructions: 'NESSSW'
+            areaSize: [5, 5],
+            startingPosition: [1, 2],
+            oilPatches: [
+                [1, 0],
+                [2, 2],
+                [2, 3]
+            ],
+            navigationInstructions: 'NESSSW'
         ]
 
         when:
@@ -53,17 +53,58 @@ class RoboticCleanerFunctionalSpec extends FunctionalSpec {
     }
 
     @Test
-    void 'when the request is invalid, it returns an error'() {
+    void 'when the starting postion is invalid, it returns an error'() {
         given:
-        def invalidRequestBody = [
+        def validRequestBody = [
             areaSize: [5, 5],
-            startingPosition: [1],
+            startingPosition: [1, 2],
             oilPatches: [
                 [1, 0],
                 [2, 2],
                 [2, 3]
             ],
-            navigationInstructions: 'NNESEESWNWW'
+            navigationInstructions: 'NESSSW'
+        ]
+        def invalidRequestBody = validRequestBody << [startingPosition: [1]]
+
+        when:
+        def response = post(resource: '/robot/clean', content: invalidRequestBody)
+
+        then:
+        response.statusCode == BAD_REQUEST.value()
+    }
+
+    @Test
+    void 'when the starting postion is not present, it returns an error'() {
+        given:
+        def invalidRequestBody = [
+            areaSize: [5, 5],
+            oilPatches: [
+                [1, 0],
+                [2, 2],
+                [2, 3]
+            ],
+            navigationInstructions: 'NESSSW'
+        ]
+
+        when:
+        def response = post(resource: '/robot/clean', content: invalidRequestBody)
+
+        then:
+        response.statusCode == BAD_REQUEST.value()
+    }
+
+    @Test
+    void 'when the area size is not present, it returns an error'() {
+        given:
+        def invalidRequestBody = [
+            startingPosition: [1, 2],
+            oilPatches: [
+                [1, 0],
+                [2, 2],
+                [2, 3]
+            ],
+            navigationInstructions: 'NESSSW'
         ]
 
         when:

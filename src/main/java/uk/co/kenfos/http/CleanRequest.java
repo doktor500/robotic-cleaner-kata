@@ -14,20 +14,22 @@ import uk.co.kenfos.domain.Robot;
 import uk.co.kenfos.domain.Sea;
 import uk.co.kenfos.http.json.NavigationInstructionsDeserializer;
 
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 
 import static io.vavr.collection.List.of;
 import static io.vavr.collection.List.ofAll;
+import static java.util.Collections.emptyList;
 
 @Log
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class CleanRequest {
-    private Coordinate areaSize;
-    private Coordinate startingPosition;
-    private Collection<Coordinate> oilPatches;
-    private Collection<NavigationInstruction> navigationInstructions;
+    @NotNull private Coordinate areaSize;
+    @NotNull private Coordinate startingPosition;
+    private Collection<Coordinate> oilPatches = emptyList();
+    private Collection<NavigationInstruction> navigationInstructions = emptyList();
 
     public Try<CleanResponse> execute() {
         var sea = new Sea(areaSize, oilPatches);

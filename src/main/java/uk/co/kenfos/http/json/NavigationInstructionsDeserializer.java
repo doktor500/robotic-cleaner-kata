@@ -14,6 +14,7 @@ import java.util.List;
 
 import static java.lang.String.format;
 import static java.util.Arrays.stream;
+import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
 @Log
@@ -24,14 +25,14 @@ public class NavigationInstructionsDeserializer extends JsonDeserializer<List<Na
     @Override
     public List<NavigationInstruction> deserialize(JsonParser parser, DeserializationContext ctx) throws IOException {
         var value = readValue(parser);
-        return StringUtils.isEmpty(value) ? null : fromJson(value);
+        return StringUtils.isEmpty(value) ? emptyList() : fromJson(value);
     }
 
     private List<NavigationInstruction> fromJson(String text) {
         try {
             return parseJson(text);
         } catch (Exception exception) {
-            log.warning(format("Error occured when trying to parse json %s", text));
+            log.warning(format("Error occured when trying to parse json '%s'", text));
             throw new IllegalArgumentException(exception);
         }
     }
