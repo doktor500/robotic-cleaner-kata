@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.java.Log;
 import uk.co.kenfos.domain.*;
-import uk.co.kenfos.http.json.NavigationInstructionsDeserializer;
+import uk.co.kenfos.http.json.deserializer.NavigationInstructionsDeserializer;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;

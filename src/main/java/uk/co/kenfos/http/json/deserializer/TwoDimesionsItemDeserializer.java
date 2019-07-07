@@ -1,4 +1,4 @@
-package uk.co.kenfos.http.json;
+package uk.co.kenfos.http.json.deserializer;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;

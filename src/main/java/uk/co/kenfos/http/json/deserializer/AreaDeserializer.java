@@ -1,4 +1,4 @@
-package uk.co.kenfos.http.json;
+package uk.co.kenfos.http.json.deserializer;
 
 import uk.co.kenfos.domain.Area;
 

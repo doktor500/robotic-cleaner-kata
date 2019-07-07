@@ -10,6 +10,9 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 import uk.co.kenfos.domain.Area;
 import uk.co.kenfos.domain.Coordinate;
+import uk.co.kenfos.http.json.deserializer.AreaDeserializer;
+import uk.co.kenfos.http.json.deserializer.CoordinateDeserializer;
+import uk.co.kenfos.http.json.serializer.CoordinateSerializer;
 
 @Configuration
 @EnableWebFlux

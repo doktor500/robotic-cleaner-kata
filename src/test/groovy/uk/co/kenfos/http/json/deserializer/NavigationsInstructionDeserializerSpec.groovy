@@ -1,4 +1,4 @@
-package uk.co.kenfos.http.json
+package uk.co.kenfos.http.json.deserializer
 
 import spock.lang.Specification
 import spock.lang.Unroll

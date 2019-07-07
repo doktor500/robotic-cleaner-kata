@@ -1,4 +1,4 @@
-package uk.co.kenfos.http.json
+package uk.co.kenfos.http.json.serializer
 
 import com.fasterxml.jackson.core.JsonFactory
 import com.fasterxml.jackson.databind.ObjectMapper
