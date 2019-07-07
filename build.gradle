@@ -9,6 +9,7 @@ apply plugin: 'io.spring.dependency-management'
 
 group = 'uk.co.kenfos'
 version = '0.0.1-SNAPSHOT'
+mainClassName = 'uk.co.kenfos.RoboticCleanerApp'
 sourceCompatibility = '12'
 
 repositories { 
@@ -17,6 +18,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'io.vavr:vavr:0.10.0'
     implementation 'org.projectlombok:lombok:1.18.8'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
@@ -31,4 +33,10 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
-mainClassName = 'uk.co.kenfos.App'
+tasks.withType(JavaCompile).each {
+    it.options.compilerArgs.add('--enable-preview')
+}
+
+test {
+    jvmArgs(['--enable-preview'])
+}

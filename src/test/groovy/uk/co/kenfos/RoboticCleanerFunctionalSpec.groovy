@@ -9,7 +9,7 @@ import static org.springframework.http.HttpStatus.OK
 class RoboticCleanerFunctionalSpec extends FunctionalSpec {
 
     @Test
-    void 'when the request is valid, the robot cleans the sea'() {
+    void 'the robot cleans one oil patch in the sea'() {
         given:
         def validRequestBody = [
             areaSize: [5, 5],
@@ -28,6 +28,28 @@ class RoboticCleanerFunctionalSpec extends FunctionalSpec {
         then:
         response.statusCode == OK.value()
         json(response) == [finalPosition: [1, 3], oilPatchesCleaned : 1]
+    }
+
+    @Test
+    void 'the robot cleans all oil patches in the sea'() {
+        given:
+        def validRequestBody = [
+                areaSize: [5, 5],
+                startingPosition: [1, 2],
+                oilPatches: [
+                    [1, 0],
+                    [2, 2],
+                    [2, 3]
+                ],
+                navigationInstructions: 'NESSSW'
+        ]
+
+        when:
+        def response = post(resource: '/robot/clean', content: validRequestBody)
+
+        then:
+        response.statusCode == OK.value()
+        json(response) == [finalPosition: [1, 0], oilPatchesCleaned : 3]
     }
 
     @Test

@@ -17,6 +17,6 @@ import static org.springframework.http.HttpStatus.OK;
 public class RobotControler {
     @PostMapping("/clean")
     public Mono<ResponseEntity<CleanResponse>> clean(@RequestBody CleanRequest request) {
-        return Mono.just(new ResponseEntity<>(new CleanResponse(new Coordinate(1, 3), 1), OK));
+        return Mono.just(new ResponseEntity<>(request.execute(), OK));
     }
 }
