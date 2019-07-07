@@ -16,7 +16,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping(value="/robot")
-public class RobotControler {
+public class RobotCleanerControler {
     @PostMapping("/clean")
     public Mono<ResponseEntity<CleanResponse>> clean(@Valid @RequestBody Mono<CleanRequest> request) {
         return request.map(this::cleanSea);
