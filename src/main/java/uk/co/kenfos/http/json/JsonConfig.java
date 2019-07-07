@@ -8,6 +8,7 @@ import org.springframework.http.codec.json.Jackson2JsonDecoder;
 import org.springframework.http.codec.json.Jackson2JsonEncoder;
 import org.springframework.web.reactive.config.EnableWebFlux;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
+import uk.co.kenfos.domain.Area;
 import uk.co.kenfos.domain.Coordinate;
 
 @Configuration
@@ -27,7 +28,8 @@ public class JsonConfig implements WebFluxConfigurer {
     private SimpleModule getJsonModule() {
         return new SimpleModule()
             .addSerializer(Coordinate.class, new CoordinateSerializer())
-            .addDeserializer(Coordinate.class, new CoordinateDeserializer());
+            .addDeserializer(Coordinate.class, new CoordinateDeserializer())
+            .addDeserializer(Area.class, new AreaDeserializer());
     }
 }
 

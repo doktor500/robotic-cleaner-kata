@@ -10,7 +10,7 @@ class SeaSpec extends Specification {
     void 'creates an instance of sea based on the area size and oil patches'() {
         given:
         def oilPatches = [new Coordinate(0, 0), new Coordinate(0, 1)]
-        def areaSize = new Coordinate(3, 3)
+        def areaSize = new Area(3, 3)
 
         expect:
         new Sea(areaSize, oilPatches).squares == [
@@ -23,7 +23,7 @@ class SeaSpec extends Specification {
     void 'cleans a square in the sea'() {
         given:
         def oilPatches = [new Coordinate(0, 0), new Coordinate(0, 1)]
-        def areaSize = new Coordinate(2, 2)
+        def areaSize = new Area(2, 2)
         def sea = new Sea(areaSize, oilPatches)
 
         expect:
@@ -36,7 +36,7 @@ class SeaSpec extends Specification {
     void 'returns oil patches'() {
         given:
         def oilPatches = [new Coordinate(2, 4)]
-        def areaSize = new Coordinate(5, 5)
+        def areaSize = new Area(5, 5)
         def sea = new Sea(areaSize, oilPatches)
 
         expect:

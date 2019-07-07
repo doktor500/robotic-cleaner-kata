@@ -17,7 +17,7 @@ import static uk.co.kenfos.utils.StreamUtils.reverseRange;
 public class Sea {
     private final List<List<Square>> squares;
 
-    public Sea(Coordinate areaSize, Collection<Coordinate> oilPatches) {
+    public Sea(Area areaSize, Collection<Coordinate> oilPatches) {
         squares = createMatrix(areaSize, oilPatches);
     }
 
@@ -34,8 +34,8 @@ public class Sea {
             .collect(toList());
     }
 
-    private Coordinate getAreaSize() {
-        return new Coordinate(squares.size(), squares.stream().findAny().map(List::size).orElseThrow());
+    private Area getAreaSize() {
+        return new Area(squares.size(), squares.stream().findAny().map(List::size).orElseThrow());
     }
 
     private List<Coordinate> oilPatchesMinus(Coordinate coordinateToClean) {
@@ -50,7 +50,7 @@ public class Sea {
             .mapToObj(column -> (squares.get(row).get(column)) == OIL ? new Coordinate(column, row) : null);
     }
 
-    private List<List<Square>> createMatrix(Coordinate areaSize, Collection<Coordinate> oilPatches) {
+    private List<List<Square>> createMatrix(Area areaSize, Collection<Coordinate> oilPatches) {
         return reverseRange(0, areaSize.getY())
             .mapToObj(row -> createRow(row, areaSize.getX(), oilPatches))
             .collect(toList());

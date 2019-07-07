@@ -8,10 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.java.Log;
-import uk.co.kenfos.domain.Coordinate;
-import uk.co.kenfos.domain.NavigationInstruction;
-import uk.co.kenfos.domain.Robot;
-import uk.co.kenfos.domain.Sea;
+import uk.co.kenfos.domain.*;
 import uk.co.kenfos.http.json.NavigationInstructionsDeserializer;
 
 import javax.validation.constraints.NotEmpty;
@@ -26,7 +23,7 @@ import static io.vavr.collection.List.ofAll;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CleanRequest {
-    @NotNull private Coordinate areaSize;
+    @NotNull private Area areaSize;
     @NotNull private Coordinate startingPosition;
     @NotEmpty private Collection<Coordinate> oilPatches;
     @NotEmpty private Collection<NavigationInstruction> navigationInstructions;
