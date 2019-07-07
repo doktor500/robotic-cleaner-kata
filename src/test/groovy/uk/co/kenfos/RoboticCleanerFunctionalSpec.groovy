@@ -113,4 +113,78 @@ class RoboticCleanerFunctionalSpec extends FunctionalSpec {
         then:
         response.statusCode == BAD_REQUEST.value()
     }
+
+    @Test
+    void 'when the oil patches are not present, it returns an error'() {
+        given:
+        def invalidRequestBody = [
+            areaSize: [5, 5],
+            startingPosition: [1, 2],
+            navigationInstructions: 'NESSSW'
+        ]
+
+        when:
+        def response = post(resource: '/robot/clean', content: invalidRequestBody)
+
+        then:
+        response.statusCode == BAD_REQUEST.value()
+    }
+
+    @Test
+    void 'when the oil patches are empty, it returns an error'() {
+        given:
+        def invalidRequestBody = [
+            areaSize: [5, 5],
+            startingPosition: [1, 2],
+            oilPatches: [],
+            navigationInstructions: 'NESSSW'
+        ]
+
+        when:
+        def response = post(resource: '/robot/clean', content: invalidRequestBody)
+
+        then:
+        response.statusCode == BAD_REQUEST.value()
+    }
+
+    @Test
+    void 'when the navigation instructions are not present, it returns an error'() {
+        given:
+        def invalidRequestBody = [
+            areaSize: [5, 5],
+            startingPosition: [1, 2],
+            oilPatches: [
+                [1, 0],
+                [2, 2],
+                [2, 3]
+            ]
+        ]
+
+        when:
+        def response = post(resource: '/robot/clean', content: invalidRequestBody)
+
+        then:
+        response.statusCode == BAD_REQUEST.value()
+    }
+
+    @Test
+    void 'when the navigation instructions are empty, it returns an error'() {
+        given:
+        def invalidRequestBody = [
+            areaSize: [5, 5],
+            startingPosition: [1, 2],
+            oilPatches: [
+                [1, 0],
+                [2, 2],
+                [2, 3]
+            ],
+            navigationInstructions: ''
+        ]
+
+        when:
+        def response = post(resource: '/robot/clean', content: invalidRequestBody)
+
+        then:
+        response.statusCode == BAD_REQUEST.value()
+    }
 }

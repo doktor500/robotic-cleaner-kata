@@ -29,7 +29,7 @@ public class CoordinateDeserializer extends JsonDeserializer<Coordinate> {
             return new Coordinate(coordinate[0], coordinate[1]);
         } catch (Exception exception) {
             log.warning(format("Error occured when trying to parse json '%s'", text));
-            throw new IllegalArgumentException(exception);
+            return null;
         }
     }
 

@@ -3,8 +3,8 @@ package uk.co.kenfos.http.json
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static uk.co.kenfos.utils.JsonUtils.jsonParser
 import static uk.co.kenfos.domain.NavigationInstruction.*
+import static uk.co.kenfos.utils.JsonUtils.jsonParser
 
 class NavigationsInstructionDeserializerSpec extends Specification {
 
@@ -27,11 +27,8 @@ class NavigationsInstructionDeserializerSpec extends Specification {
 
     @Unroll
     void 'raises an exception when it is not possible to create a navigation instructions instance'() {
-        when:
-        navigationInstructionsDeserializer.deserialize(jsonParser(json), null)
-
-        then:
-        thrown IllegalArgumentException
+        expect:
+        navigationInstructionsDeserializer.deserialize(jsonParser(json), null).empty
 
         where:
         json << [

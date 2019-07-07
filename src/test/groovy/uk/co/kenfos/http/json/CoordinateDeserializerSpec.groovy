@@ -27,11 +27,8 @@ class CoordinateDeserializerSpec extends Specification {
 
     @Unroll
     void 'raises an exception when it is not possible to create a coordinate instance'() {
-        when:
-        coordinateDeserializer.deserialize(jsonParser(json), null)
-
-        then:
-        thrown IllegalArgumentException
+        expect:
+        Optional.ofNullable(coordinateDeserializer.deserialize(jsonParser(json), null)).empty
 
         where:
         json << [

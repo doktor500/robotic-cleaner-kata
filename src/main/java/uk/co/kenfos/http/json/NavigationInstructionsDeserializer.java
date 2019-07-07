@@ -33,7 +33,7 @@ public class NavigationInstructionsDeserializer extends JsonDeserializer<List<Na
             return parseJson(text);
         } catch (Exception exception) {
             log.warning(format("Error occured when trying to parse json '%s'", text));
-            throw new IllegalArgumentException(exception);
+            return emptyList();
         }
     }
 
