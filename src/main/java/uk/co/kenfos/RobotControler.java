@@ -20,10 +20,9 @@ public class RobotControler {
         return Mono.just(cleanSea(request));
     }
 
-    private ResponseEntity<CleanResponse> cleanSea(@RequestBody CleanRequest request) {
+    private ResponseEntity<CleanResponse> cleanSea(CleanRequest request) {
         return request.execute()
-            .toJavaOptional()
             .map(response -> new ResponseEntity<>(response, OK))
-            .orElseGet(() -> new ResponseEntity<>(null, BAD_REQUEST));
+            .getOrElse(new ResponseEntity<>(BAD_REQUEST));
     }
 }

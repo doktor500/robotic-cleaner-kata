@@ -2,6 +2,7 @@ package uk.co.kenfos.domain;
 
 import lombok.Data;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.IntStream;
@@ -16,7 +17,7 @@ import static uk.co.kenfos.utils.StreamUtils.reverseRange;
 public class Sea {
     private final List<List<Square>> squares;
 
-    public Sea(Coordinate areaSize, List<Coordinate> oilPatches) {
+    public Sea(Coordinate areaSize, Collection<Coordinate> oilPatches) {
         squares = createMatrix(areaSize, oilPatches);
     }
 
@@ -49,19 +50,19 @@ public class Sea {
             .mapToObj(column -> (squares.get(row).get(column)) == OIL ? new Coordinate(column, row) : null);
     }
 
-    private List<List<Square>> createMatrix(Coordinate areaSize, List<Coordinate> oilPatches) {
+    private List<List<Square>> createMatrix(Coordinate areaSize, Collection<Coordinate> oilPatches) {
         return reverseRange(0, areaSize.getY())
             .mapToObj(row -> createRow(row, areaSize.getX(), oilPatches))
             .collect(toList());
     }
 
-    private List<Square> createRow(Integer row, Integer columns, List<Coordinate> oilPatches) {
+    private List<Square> createRow(Integer row, Integer columns, Collection<Coordinate> oilPatches) {
         return IntStream.range(0, columns)
             .mapToObj(column -> createSquare(column, row, oilPatches))
             .collect(toList());
     }
 
-    private Square createSquare(Integer x, Integer y, List<Coordinate> oilPatches) {
+    private Square createSquare(Integer x, Integer y, Collection<Coordinate> oilPatches) {
         return oilPatches.contains(new Coordinate(x, y)) ? OIL : WATER;
     }
 
