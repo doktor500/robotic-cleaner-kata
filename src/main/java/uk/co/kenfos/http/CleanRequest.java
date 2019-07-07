@@ -34,24 +34,26 @@ public class CleanRequest {
     public Try<CleanResponse> execute() {
         var sea = new Sea(areaSize, oilPatches);
         var squaresToClean = ofAll(squaresToClean());
-        return Try.of(() -> cleanSea(sea, squaresToClean));
+        return cleanSea(sea, squaresToClean);
     }
 
-    private CleanResponse cleanSea(Sea sea, List<Coordinate> squaresToClean) {
-        validateSquaresToClean(ofAll(squaresToClean()));
-        var cleanedSea = squaresToClean.foldLeft(sea, Sea::clean);
-        return new CleanResponse(squaresToClean.last(), numberOfSquaresCleaned(cleanedSea));
+    private Try<CleanResponse> cleanSea(Sea sea, List<Coordinate> squaresToClean) {
+        return validSquaresToClean(ofAll(squaresToClean()))
+            .map(coordinates -> coordinates.foldLeft(sea, Sea::clean))
+            .map(cleanedSea -> new CleanResponse(squaresToClean.last(), numberOfSquaresCleaned(cleanedSea)));
     }
 
-    private void validateSquaresToClean(List<Coordinate> squaresToClean) {
-        if (!anyCoordinateOutOfRange(squaresToClean).isEmpty()) {
-            var errorMessage = "Coordinate out of range";
-            log.warning(errorMessage);
-            throw new IllegalArgumentException(errorMessage);
-        }
+    private Try<List<Coordinate>> validSquaresToClean(List<Coordinate> squaresToClean) {
+        return coordinateOutOfRange(squaresToClean).isEmpty() ? Try.success(squaresToClean) : handleOutOfRangeError();
     }
 
-    private Option<Coordinate> anyCoordinateOutOfRange(List<Coordinate> squaresToClean) {
+    private Try<List<Coordinate>> handleOutOfRangeError() {
+        var errorMessage = "Coordinate out of range";
+        log.warning(errorMessage);
+        return Try.failure(new IllegalArgumentException(errorMessage));
+    }
+
+    private Option<Coordinate> coordinateOutOfRange(List<Coordinate> squaresToClean) {
         return squaresToClean
             .find(coordinate -> coordinate.getX() >= areaSize.getX() || coordinate.getY() >= areaSize.getY());
     }
