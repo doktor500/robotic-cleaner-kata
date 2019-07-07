@@ -24,4 +24,19 @@ class CleanRequestSpec extends Specification {
         new Coordinate(0, 0) | []                     | new Coordinate(0, 0) | 1
         new Coordinate(0, 0) | [NORTH]                | new Coordinate(0, 1) | 2
     }
+
+    void 'fails to execute a clean request when the navigation instructions are invalid'() {
+        given:
+        def areaSize = new Coordinate(2, 2)
+        def oilPatches = [new Coordinate(1, 1)]
+        def startingPosition = new Coordinate(0, 0)
+        def navigationInstructions = [NORTH, NORTH]
+        def request = new CleanRequest(areaSize, startingPosition, oilPatches, navigationInstructions)
+
+        when:
+        request.execute()
+
+        then:
+        thrown IllegalArgumentException
+    }
 }

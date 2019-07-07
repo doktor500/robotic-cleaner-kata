@@ -28,6 +28,18 @@ public class CleanRequest {
     public CleanResponse execute() {
         var sea = new Sea(areaSize, oilPatches);
         var squaresToClean = ofAll(squaresToClean());
+        validateSquaresToClean(squaresToClean.asJava());
+        return cleanSea(sea, squaresToClean);
+    }
+    
+    private void validateSquaresToClean(List<Coordinate> squaresToClean) {
+        var coordinateOutOfRange = squaresToClean.stream()
+            .filter(coordinate -> coordinate.getX() >= areaSize.getX() || coordinate.getY() >= areaSize.getY())
+            .findAny();
+        if (coordinateOutOfRange.isPresent()) throw new IllegalArgumentException("Coordinate out of range");
+    }
+
+    private CleanResponse cleanSea(Sea sea, io.vavr.collection.List<Coordinate> squaresToClean) {
         var cleanedSea = squaresToClean.foldLeft(sea, Sea::clean);
         return new CleanResponse(squaresToClean.last(), numberOfSquaresCleaned(cleanedSea));
     }
